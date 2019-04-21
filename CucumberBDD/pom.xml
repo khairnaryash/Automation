@@ -1,0 +1,194 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.yash</groupId>
+	<artifactId>CucumberBDD</artifactId>
+	<version>0.0.1</version>
+
+	<properties>
+		<cucumber.version>1.2.5</cucumber.version>
+		<selenium-java.version>2.39.0</selenium-java.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+
+		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-picocontainer</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-core</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vimalselvam</groupId>
+			<artifactId>cucumber-extentsreport</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>3.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-htmlunit-driver</artifactId>
+			<version>2.52.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName> CucumberBDD </finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.4.1</version>
+				<configuration>
+					<rules>
+						<dependencyConvergence />
+					</rules>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+
+				<configuration>
+
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>./lib/</classpathPrefix>
+							<mainClass>com/yash/runnerPackage/CustomMain</mainClass>
+						</manifest>
+
+						<manifestEntries>
+							<mode>development</mode>
+							<url>${project.url}</url>
+							<key>value</key>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>  <!-- Copy features -->
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy-feature-files</id>
+						<!-- here the phase you need -->
+						<phase>compile</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/Features/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>Features/</directory>
+									<includes>
+										<include>*.feature</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>  <!-- Copy Run Manager -->
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy-run-manager</id>
+						<!-- here the phase you need -->
+						<phase>compile</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/RunManager/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>RunManager/</directory>
+									<includes>
+										<include>*.xlsx</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
